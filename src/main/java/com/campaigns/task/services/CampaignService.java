@@ -21,7 +21,6 @@ public class CampaignService {
 
     public Optional<Campaign> addNewCampaign(Campaign campaign) {
         this.defaultAccountBalance -= campaign.getFund();
-        System.out.println(this.defaultAccountBalance);
         if(this.defaultAccountBalance < 0) return Optional.empty();
 
         return Optional.of(this.campaignRepository.save(campaign));
@@ -50,5 +49,9 @@ public class CampaignService {
 
     public Optional<Campaign> getSpecificCampaign(int id) {
         return this.campaignRepository.findById(id);
+    }
+
+    public void removeCampaign(int id) {
+        this.campaignRepository.deleteById(id);
     }
 }

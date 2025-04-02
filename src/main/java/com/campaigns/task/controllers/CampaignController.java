@@ -3,7 +3,6 @@ package com.campaigns.task.controllers;
 import com.campaigns.task.model.Campaign;
 import com.campaigns.task.services.CampaignService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,5 +42,11 @@ public class CampaignController {
     public ResponseEntity<?> getSpecificCampaign(@PathVariable(name = "id") int id) {
         Optional<Campaign> resultOpt = this.campaignService.getSpecificCampaign(id);
         return resultOpt.isPresent() ? ResponseEntity.ok(resultOpt.get()) : ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("remove/{id}")
+    public ResponseEntity<?> removeCampaign(@PathVariable(value = "id") int id) {
+        this.campaignService.removeCampaign(id);
+        return ResponseEntity.ok().build();
     }
 }
