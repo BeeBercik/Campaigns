@@ -1,24 +1,14 @@
 
-const routes = {
-    "/": renderDashboardView,
-    "/new": renderNewCampaignForm,
-    "/edit": renderEditCampaignForm
-};
+dashboard();
 
-function navigate(path) {
-    history.pushState({}, "", path);
-    renderRoute(path);
+function dashboard() {
+    renderDashboardView();
 }
 
-function renderRoute(path) {
-    const view = routes[path] || routes["/"];
-    view();
+function newCamp() {
+    renderNewCampaignForm();
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    renderRoute(window.location.pathname);
-});
-
-window.addEventListener("popstate", () => {
-    renderRoute(window.location.pathname);
-});
+function editCamp(id) {
+    renderEditCampaignForm(id);
+}

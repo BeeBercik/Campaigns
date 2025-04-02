@@ -60,7 +60,7 @@ function renderNewCampaignForm() {
     });
 }
 
-function renderEditCampaignForm() {
+function renderEditCampaignForm(id) {
     const content = document.getElementById("content");
     content.innerHTML = `
    <header>
@@ -115,10 +115,27 @@ function renderEditCampaignForm() {
   </form>
     `;
 
+    initializeFieldsToEdit(id);
+
     document.getElementById("edit-camp-form").addEventListener("submit", (e) => {
         e.preventDefault();
-        sendFormData(e, "/edit");
+        sendFormData(e, `/edit/${id}`);
     });
+}
+
+async function initializeFieldsToEdit(id) {
+    const response = await fetch("/api/getCampaign/" + id);
+    const campaign = await response.json();
+
+    document.getElementById("camp-name").value = campaign.name;
+    document.getElementById("camp-keywords").value = campaign.keywords;
+    document.getElementById("camp-amount").value = campaign.amount;
+    document.getElementById("camp-fund").value = campaign.fund;
+    document.getElementById("camp-radius").value = campaign.radius;
+    document.getElementById("camp-town").value = campaign.town;
+
+    if (campaign.status) document.getElementById("camp-status-on").checked = true;
+    else document.getElementById("camp-status-off").checked = true;
 }
 
 async function sendFormData(e, endpoint) {
@@ -133,5 +150,5 @@ async function sendFormData(e, endpoint) {
     });
 
     if(!response.ok) alert("Not enough money!");
-    navigate("/");
+    dashboard();
 }
