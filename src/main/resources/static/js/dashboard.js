@@ -48,5 +48,6 @@ function renderDashboardView() {
 
 async function loadCampaigns() {
     const response = await fetch("/api/getAll");
-    console.log(await response.json());
+    let x = await response.json();
+    console.log(x);
 }

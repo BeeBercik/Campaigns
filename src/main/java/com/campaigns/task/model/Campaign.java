@@ -1,11 +1,9 @@
 package com.campaigns.task.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
 
 @Entity
 @Table(name = "campaigns")
-@Getter
 public class Campaign {
 
     @Id
@@ -63,6 +61,38 @@ public class Campaign {
 
     public void setRadius(Integer radius) {
         this.radius = radius;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public Long getAmount() {
+        return amount;
+    }
+
+    public Long getFund() {
+        return fund;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public String getTown() {
+        return town;
+    }
+
+    public Integer getRadius() {
+        return radius;
     }
 
     @Override

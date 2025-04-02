@@ -132,6 +132,6 @@ async function sendFormData(e, endpoint) {
         body: JSON.stringify(data)
     });
 
-    // if(!response.ok) alert("Error");
+    if(!response.ok) alert("Error");
     navigate("/");
 }
