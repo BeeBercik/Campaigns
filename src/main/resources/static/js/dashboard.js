@@ -10,6 +10,7 @@ function renderDashboardView() {
     <div class="top-bar">
       <h3>Your campaigns</h3>
       <button onclick="navigate('/new')">Add new</button>
+      <p id="account-balance"></p>
     </div>
 
     <div id="table-container">
@@ -17,27 +18,17 @@ function renderDashboardView() {
         <thead>
         <tr>
           <th>Name</th>
+          <th>Town</th>
+          <th>Bid amount</th>
+          <th>Fund</th>
+          <th>Radius</th>
           <th>Keywords</th>
           <th>Status</th>
-          <th>Town</th>
-          <th>Bid</th>
-          <th>Fund</th>
           <th>Actions</th>
         </tr>
         </thead>
         <tbody>
-        <tr>
-          <td>row</td>
-          <td>row</td>
-          <td>row</td>
-          <td>row</td>
-          <td>row</td>
-          <td>row</td>
-          <td class="actions">
-            <button onclick="navigate('/edit')">Edit</button>
-            <button>Delete</button>
-          </td>
-        </tr>
+                <!--  generating with js -->
         </tbody>
       </table>
     </div>
@@ -48,6 +39,38 @@ function renderDashboardView() {
 
 async function loadCampaigns() {
     const response = await fetch("/api/getAll");
-    let x = await response.json();
-    console.log(x);
+    let campaigns = await response.json();
+    for (const campaign of campaigns) {
+        const tr = document.createElement("tr");
+
+        tr.innerHTML = `<tr>
+          <td>${campaign.name}</td>
+          <td>${campaign.town}</td>
+          <td>${campaign.amount},-</td>
+          <td class="single-camp-fund">${campaign.fund},-</td>
+          <td>${campaign.radius}km</td>
+          <td>${campaign.keywords}</td>
+          <td>${campaign.status ? "On" : "Off"}</td>
+          <td class="actions">
+            <button onclick="navigate('/edit')">Edit</button>
+            <button>Delete</button>
+          </td></tr>`;
+
+        document.querySelector("tbody").appendChild(tr);
+    }
+
+    calculateBalance();
 }
+
+function calculateBalance() {
+    const rows = document.getElementsByClassName("single-camp-fund");
+    let balance = 1000;
+
+    for(const row of rows) {
+        balance -= parseInt(row.textContent);
+    }
+
+    document.getElementById("account-balance").innerHTML = `<b>Account balance: ${balance},-</b>`;
+}
+
+

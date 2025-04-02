@@ -12,6 +12,7 @@ import java.util.Optional;
 public class CampaignService {
 
     private final CampaignRepository campaignRepository;
+    private int defaultAccountBalance = 1000;
 
     @Autowired
     public CampaignService(CampaignRepository campaignRepository) {
@@ -19,6 +20,10 @@ public class CampaignService {
     }
 
     public Optional<Campaign> addNewCampaign(Campaign campaign) {
+        this.defaultAccountBalance -= campaign.getFund();
+        System.out.println(this.defaultAccountBalance);
+        if(this.defaultAccountBalance < 0) return Optional.empty();
+
         return Optional.of(this.campaignRepository.save(campaign));
     }
 
