@@ -23,7 +23,7 @@ button {
     padding: 10px 0;
 }
 
-.table-container {
+#table-container {
     display: flex;
     justify-content: center;
     margin-top: 20px;

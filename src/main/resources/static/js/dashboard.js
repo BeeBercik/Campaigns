@@ -12,7 +12,7 @@ function renderDashboardView() {
       <button onclick="navigate('/new')">Add new</button>
     </div>
 
-    <div class="table-container">
+    <div id="table-container">
       <table>
         <thead>
         <tr>
@@ -43,4 +43,10 @@ function renderDashboardView() {
     </div>
   </main>
     `;
+    loadCampaigns();
+}
+
+async function loadCampaigns() {
+    const response = await fetch("/api/getAll");
+    console.log(await response.json());
 }
