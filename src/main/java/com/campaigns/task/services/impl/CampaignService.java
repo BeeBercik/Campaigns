@@ -23,8 +23,10 @@ public class CampaignService implements CampaignServiceInterface {
     }
 
     public Optional<Campaign> addNewCampaign(CampaignRequestDTO campaignDTO) {
+        if (campaignDTO.fund() > this.defaultAccountBalance) {
+            return Optional.empty();
+        }
         this.defaultAccountBalance -= campaignDTO.fund();
-        if(this.defaultAccountBalance < 0) return Optional.empty();
 
         return Optional.of(this.campaignRepository.save(
                 this.mapRequestToEntity(campaignDTO)));
