@@ -4,6 +4,12 @@ Umożliwia tworzenie, edytowanie, przeglądanie oraz usuwanie kampanii, które z
 
 ---
 
+#### 🌍 Aplikacja dostępna online: 
+
+https://campaigns-production-b5ed.up.railway.app/
+
+---
+
 ### 💡 Dodatki:
 - Saldo konta jest aktualizowane dynamicznie (pobieranez z serwera, odejmowane przy tworzeniu, różnicowane przy edycji, zwracane przy usunięciu).
 - Frontend zbudowany jako SPA (Single Page Application) w czystym JavaScript (vanilla JS) z podstronami /, /new, /edit.
