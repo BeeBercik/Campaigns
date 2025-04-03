@@ -68,6 +68,10 @@ public class CampaignService {
         return true;
     }
 
+    public Long getBalance() {
+        return this.defaultAccountBalance;
+    }
+
     public Campaign mapRequestToEntity(CampaignRequestDTO dto) {
         return new Campaign(
                 dto.name(),

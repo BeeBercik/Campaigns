@@ -39,15 +39,20 @@ public class CampaignController {
         return resultOpt.isPresent() ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
     }
 
-    @GetMapping("getCampaign/{id}")
+    @GetMapping("/getCampaign/{id}")
     public ResponseEntity<?> getSpecificCampaign(@PathVariable(name = "id") int id) {
         Optional<CampaignResponseDTO> resultOpt = this.campaignService.getSpecificCampaign(id);
         return resultOpt.isPresent() ? ResponseEntity.ok(resultOpt.get()) : ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("remove/{id}")
+    @DeleteMapping("/remove/{id}")
     public ResponseEntity<?> removeCampaign(@PathVariable(value = "id") int id) {
         boolean result = this.campaignService.removeCampaign(id);
         return result ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/balance")
+    public ResponseEntity<Long> getAccountBalance() {
+        return ResponseEntity.ok(this.campaignService.getBalance());
     }
 }

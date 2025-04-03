@@ -59,17 +59,12 @@ async function loadCampaigns() {
         document.querySelector("tbody").appendChild(tr);
     }
 
-    calculateBalance();
+    updateBalance();
 }
 
-function calculateBalance() {
-    const rows = document.getElementsByClassName("single-camp-fund");
-    let balance = 1000;
-
-    for(const row of rows) {
-        balance -= parseInt(row.textContent);
-    }
-
+async function updateBalance() {
+    const response = await  fetch("/api/balance");
+    const balance = await response.json();
     document.getElementById("account-balance").innerHTML = `<b>Account balance: ${balance},-</b>`;
 }
 
