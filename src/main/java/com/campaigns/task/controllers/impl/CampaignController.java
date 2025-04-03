@@ -1,9 +1,10 @@
-package com.campaigns.task.controllers;
+package com.campaigns.task.controllers.impl;
 
+import com.campaigns.task.controllers.CampaignControllerInterface;
 import com.campaigns.task.dto.CampaignRequestDTO;
 import com.campaigns.task.dto.CampaignResponseDTO;
 import com.campaigns.task.model.Campaign;
-import com.campaigns.task.services.CampaignService;
+import com.campaigns.task.services.impl.CampaignService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
-public class CampaignController {
+public class CampaignController implements CampaignControllerInterface {
 
     private final CampaignService campaignService;
 

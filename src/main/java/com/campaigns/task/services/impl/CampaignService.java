@@ -1,9 +1,10 @@
-package com.campaigns.task.services;
+package com.campaigns.task.services.impl;
 
 import com.campaigns.task.dto.CampaignRequestDTO;
 import com.campaigns.task.dto.CampaignResponseDTO;
 import com.campaigns.task.model.Campaign;
 import com.campaigns.task.repositories.CampaignRepository;
+import com.campaigns.task.services.CampaignServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CampaignService {
+public class CampaignService implements CampaignServiceInterface {
 
     private final CampaignRepository campaignRepository;
     private long defaultAccountBalance = 1000;

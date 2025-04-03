@@ -8,5 +8,5 @@ public record CampaignResponseDTO(
         Long fund,
         Boolean status,
         String town,
-        Integer radius) {
-}
+        Integer radius
+) { }
