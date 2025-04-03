@@ -1,5 +1,7 @@
 package com.campaigns.task.controllers;
 
+import com.campaigns.task.dto.CampaignRequestDTO;
+import com.campaigns.task.dto.CampaignResponseDTO;
 import com.campaigns.task.model.Campaign;
 import com.campaigns.task.services.CampaignService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,26 +23,25 @@ public class CampaignController {
     }
 
     @GetMapping("/getAll")
-    public ResponseEntity<List<Campaign>> getAllCampaigns() {
+    public ResponseEntity<List<CampaignResponseDTO>> getAllCampaigns() {
         return ResponseEntity.ok(this.campaignService.getAllCampaigns());
     }
 
     @PostMapping("/new")
-    public ResponseEntity<?> addNewCampaign(@RequestBody Campaign campaign) {
-        Optional<Campaign> resultOpt = this.campaignService.addNewCampaign(campaign);
+    public ResponseEntity<?> addNewCampaign(@RequestBody CampaignRequestDTO campaignRequestDTO) {
+        Optional<Campaign> resultOpt = this.campaignService.addNewCampaign(campaignRequestDTO);
         return resultOpt.isPresent() ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
     }
 
     @PutMapping("/edit/{id}")
-    public ResponseEntity<?> editCampaign(@PathVariable(value = "id") int id, @RequestBody Campaign campaign) {
-        campaign.setId(id);
-        Optional<Campaign> resultOpt = this.campaignService.editCampaign(campaign);
+    public ResponseEntity<?> editCampaign(@PathVariable(value = "id") int id, @RequestBody CampaignRequestDTO campaignRequestDTO) {
+        Optional<Campaign> resultOpt = this.campaignService.editCampaign(id, campaignRequestDTO);
         return resultOpt.isPresent() ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
     }
 
     @GetMapping("getCampaign/{id}")
     public ResponseEntity<?> getSpecificCampaign(@PathVariable(name = "id") int id) {
-        Optional<Campaign> resultOpt = this.campaignService.getSpecificCampaign(id);
+        Optional<CampaignResponseDTO> resultOpt = this.campaignService.getSpecificCampaign(id);
         return resultOpt.isPresent() ? ResponseEntity.ok(resultOpt.get()) : ResponseEntity.notFound().build();
     }
 

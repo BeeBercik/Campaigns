@@ -1,5 +1,7 @@
 package com.campaigns.task.services;
 
+import com.campaigns.task.dto.CampaignRequestDTO;
+import com.campaigns.task.dto.CampaignResponseDTO;
 import com.campaigns.task.model.Campaign;
 import com.campaigns.task.repositories.CampaignRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,51 +14,82 @@ import java.util.Optional;
 public class CampaignService {
 
     private final CampaignRepository campaignRepository;
-    private int defaultAccountBalance = 1000;
+    private long defaultAccountBalance = 1000;
 
     @Autowired
     public CampaignService(CampaignRepository campaignRepository) {
         this.campaignRepository = campaignRepository;
     }
 
-    public Optional<Campaign> addNewCampaign(Campaign campaign) {
-        this.defaultAccountBalance -= campaign.getFund();
+    public Optional<Campaign> addNewCampaign(CampaignRequestDTO campaignDTO) {
+        this.defaultAccountBalance -= campaignDTO.fund();
         if(this.defaultAccountBalance < 0) return Optional.empty();
 
-        return Optional.of(this.campaignRepository.save(campaign));
+        return Optional.of(this.campaignRepository.save(
+                this.mapRequestToEntity(campaignDTO)));
     }
 
-    public Optional<Campaign> editCampaign(Campaign campaign) {
-        Optional<Campaign> existingOpt = this.campaignRepository.findById(campaign.getId());
+    public Optional<Campaign> editCampaign(int id, CampaignRequestDTO campaignDTO) {
+        Optional<Campaign> existingOpt = this.campaignRepository.findById(id);
+        if(existingOpt.isEmpty()) return Optional.empty();
 
         Campaign existing = existingOpt.get();
         Long oldFund = existing.getFund();
-        Long newFund = campaign.getFund();
-        Long difference = newFund - oldFund;
+        Long newFund = campaignDTO.fund();
+        long difference = newFund - oldFund;
 
         if (this.defaultAccountBalance - difference < 0)
             return Optional.empty();
 
         this.defaultAccountBalance -= difference;
-        Campaign updated = this.campaignRepository.save(campaign);
+        Campaign updatedCampaign = this.mapRequestToEntity(campaignDTO);
+        updatedCampaign.setId(id);
 
-        return Optional.of(updated);
+        return Optional.of(this.campaignRepository.save(updatedCampaign));
     }
 
-    public List<Campaign> getAllCampaigns() {
-        return this.campaignRepository.findAll();
+    public List<CampaignResponseDTO> getAllCampaigns() {
+        return this.campaignRepository.findAll()
+                .stream()
+                .map(this::mapEntityToResponse)
+                .toList();
     }
 
-    public Optional<Campaign> getSpecificCampaign(int id) {
-        return this.campaignRepository.findById(id);
+    public Optional<CampaignResponseDTO> getSpecificCampaign(int id) {
+        return this.campaignRepository.findById(id).map(this::mapEntityToResponse);
     }
 
     public boolean removeCampaign(int id) {
-        Optional<Campaign> campaign = this.getSpecificCampaign(id);
+        Optional<Campaign> campaign = this.campaignRepository.findById(id);
         if(campaign.isEmpty()) return false;
 
-        this.campaignRepository.deleteById(id);
         this.defaultAccountBalance += campaign.get().getFund();
+        this.campaignRepository.deleteById(id);
         return true;
+    }
+
+    public Campaign mapRequestToEntity(CampaignRequestDTO dto) {
+        return new Campaign(
+                dto.name(),
+                dto.keywords(),
+                dto.amount(),
+                dto.fund(),
+                dto.status(),
+                dto.town(),
+                dto.radius()
+        );
+    }
+
+    public CampaignResponseDTO mapEntityToResponse(Campaign campaign) {
+        return new CampaignResponseDTO(
+                campaign.getId(),
+                campaign.getName(),
+                campaign.getKeywords(),
+                campaign.getAmount(),
+                campaign.getFund(),
+                campaign.getStatus(),
+                campaign.getTown(),
+                campaign.getRadius()
+        );
     }
 }
