@@ -51,7 +51,12 @@ public class CampaignService {
         return this.campaignRepository.findById(id);
     }
 
-    public void removeCampaign(int id) {
+    public boolean removeCampaign(int id) {
+        Optional<Campaign> campaign = this.getSpecificCampaign(id);
+        if(campaign.isEmpty()) return false;
+
         this.campaignRepository.deleteById(id);
+        this.defaultAccountBalance += campaign.get().getFund();
+        return true;
     }
 }

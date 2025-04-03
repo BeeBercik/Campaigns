@@ -46,7 +46,7 @@ public class CampaignController {
 
     @DeleteMapping("remove/{id}")
     public ResponseEntity<?> removeCampaign(@PathVariable(value = "id") int id) {
-        this.campaignService.removeCampaign(id);
-        return ResponseEntity.ok().build();
+        boolean result = this.campaignService.removeCampaign(id);
+        return result ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 }
