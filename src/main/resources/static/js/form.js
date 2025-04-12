@@ -51,6 +51,7 @@ function renderNewCampaignForm() {
       <input type="number" id="camp-radius" name="radius" min="0"/>
 
       <button type="submit">Add</button>
+      <button onclick="dashboard()" class="btn-cancel">Cancel</button>
     </form>
     `;
 
@@ -112,6 +113,7 @@ function renderEditCampaignForm(id) {
       <input type="number" id="camp-radius" name="radius" min="0"/>
 
     <button type="submit">Save</button>
+    <button onclick="dashboard()" class="btn-cancel">Cancel</button>
   </form>
     `;
 
