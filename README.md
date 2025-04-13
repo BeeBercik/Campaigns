@@ -6,7 +6,7 @@ Umożliwia tworzenie, edytowanie, przeglądanie oraz usuwanie kampanii, które z
 
 #### 🌍 Aplikacja dostępna online: 
 
-https://sublime-renewal-production.up.railway.app/
+https://campaigns-production-b5ed.up.railway.app/
 
 ---
 
