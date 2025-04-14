@@ -4,6 +4,7 @@ import com.campaigns.task.dto.CampaignRequestDTO;
 import com.campaigns.task.dto.CampaignResponseDTO;
 import com.campaigns.task.exceptions.CampaignNotFoundException;
 import com.campaigns.task.exceptions.InsufficientAccountBalance;
+import com.campaigns.task.mappers.CampaignMapper;
 import com.campaigns.task.model.Campaign;
 import com.campaigns.task.repositories.CampaignRepository;
 import com.campaigns.task.services.CampaignServiceInterface;
@@ -16,11 +17,13 @@ import java.util.List;
 public class CampaignService implements CampaignServiceInterface {
 
     private final CampaignRepository campaignRepository;
+    private final CampaignMapper campaignMapper;
     private long defaultAccountBalance = 1000;
 
     @Autowired
-    public CampaignService(CampaignRepository campaignRepository) {
+    public CampaignService(CampaignRepository campaignRepository, CampaignMapper campaignMapper) {
         this.campaignRepository = campaignRepository;
+        this.campaignMapper = campaignMapper;
     }
 
     public void addNewCampaign(CampaignRequestDTO campaignDTO) {
@@ -28,7 +31,7 @@ public class CampaignService implements CampaignServiceInterface {
             throw new InsufficientAccountBalance("Not enough money");
 
         this.defaultAccountBalance -= campaignDTO.fund();
-        this.campaignRepository.save(this.mapRequestToEntity(campaignDTO));
+        this.campaignRepository.save(this.campaignMapper.mapRequestToEntity(campaignDTO));
     }
 
     public void editCampaign(int id, CampaignRequestDTO campaignDTO) {
@@ -40,7 +43,7 @@ public class CampaignService implements CampaignServiceInterface {
             throw new InsufficientAccountBalance("Not enough money");
 
         this.defaultAccountBalance -= difference;
-        Campaign updatedCampaign = this.mapRequestToEntity(campaignDTO);
+        Campaign updatedCampaign = this.campaignMapper.mapRequestToEntity(campaignDTO);
         updatedCampaign.setId(id);
 
         this.campaignRepository.save(updatedCampaign);
@@ -49,13 +52,13 @@ public class CampaignService implements CampaignServiceInterface {
     public List<CampaignResponseDTO> getAllCampaigns() {
         return this.campaignRepository.findAll()
                 .stream()
-                .map(this::mapEntityToResponse)
+                .map(this.campaignMapper::mapEntityToResponse)
                 .toList();
     }
 
     public CampaignResponseDTO getSpecificCampaign(int id) {
         return this.campaignRepository.findById(id)
-                .map(this::mapEntityToResponse)
+                .map(this.campaignMapper::mapEntityToResponse)
                 .orElseThrow(() -> new CampaignNotFoundException("Campaign not found"));
     }
 
@@ -69,30 +72,5 @@ public class CampaignService implements CampaignServiceInterface {
 
     public Long getBalance() {
         return this.defaultAccountBalance;
-    }
-
-    public Campaign mapRequestToEntity(CampaignRequestDTO dto) {
-        return new Campaign(
-                dto.name(),
-                dto.keywords(),
-                dto.amount(),
-                dto.fund(),
-                dto.status(),
-                dto.town(),
-                dto.radius()
-        );
-    }
-
-    public CampaignResponseDTO mapEntityToResponse(Campaign campaign) {
-        return new CampaignResponseDTO(
-                campaign.getId(),
-                campaign.getName(),
-                campaign.getKeywords(),
-                campaign.getAmount(),
-                campaign.getFund(),
-                campaign.getStatus(),
-                campaign.getTown(),
-                campaign.getRadius()
-        );
     }
 }
