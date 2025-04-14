@@ -40,6 +40,7 @@ function renderDashboardView() {
 async function loadCampaigns() {
     const response = await fetch("/api/getAll");
     let campaigns = await response.json();
+
     for (const campaign of campaigns) {
         const tr = document.createElement("tr");
 
@@ -58,7 +59,6 @@ async function loadCampaigns() {
 
         document.querySelector("tbody").appendChild(tr);
     }
-
     updateBalance();
 }
 
