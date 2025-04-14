@@ -30,26 +30,30 @@ public class CampaignController implements CampaignControllerInterface {
 
     @PostMapping("/new")
     public ResponseEntity<?> addNewCampaign(@RequestBody CampaignRequestDTO campaignRequestDTO) {
-        Optional<Campaign> resultOpt = this.campaignService.addNewCampaign(campaignRequestDTO);
-        return resultOpt.isPresent() ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
+        return this.campaignService.addNewCampaign(campaignRequestDTO)
+                .map(c -> ResponseEntity.ok().body(c))
+                .orElse(ResponseEntity.badRequest().build());
     }
 
     @PutMapping("/edit/{id}")
     public ResponseEntity<?> editCampaign(@PathVariable(value = "id") int id, @RequestBody CampaignRequestDTO campaignRequestDTO) {
-        Optional<Campaign> resultOpt = this.campaignService.editCampaign(id, campaignRequestDTO);
-        return resultOpt.isPresent() ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
+        return this.campaignService.editCampaign(id, campaignRequestDTO)
+                .map(c -> ResponseEntity.ok().body(c))
+                .orElse(ResponseEntity.badRequest().build());
     }
 
     @GetMapping("/getCampaign/{id}")
     public ResponseEntity<?> getSpecificCampaign(@PathVariable(name = "id") int id) {
-        Optional<CampaignResponseDTO> resultOpt = this.campaignService.getSpecificCampaign(id);
-        return resultOpt.isPresent() ? ResponseEntity.ok(resultOpt.get()) : ResponseEntity.notFound().build();
+        return this.campaignService.getSpecificCampaign(id)
+                .map(c -> ResponseEntity.ok().body(c))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/remove/{id}")
     public ResponseEntity<?> removeCampaign(@PathVariable(value = "id") int id) {
-        boolean result = this.campaignService.removeCampaign(id);
-        return result ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+        return this.campaignService.removeCampaign(id)
+                ?  ResponseEntity.ok().build()
+                : ResponseEntity.notFound().build();
     }
 
     @GetMapping("/balance")

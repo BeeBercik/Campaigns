@@ -9,7 +9,7 @@ function renderDashboardView() {
   <main>
     <div class="top-bar">
       <h3>Your campaigns</h3>
-      <button onclick="newCamp('/new')">Add new</button>
+      <button onclick="newCamp('/new')" class="btn-new">Add new</button>
       <p id="account-balance"></p>
     </div>
 
@@ -52,8 +52,8 @@ async function loadCampaigns() {
           <td>${campaign.keywords}</td>
           <td>${campaign.status ? "On" : "Off"}</td>
           <td class="actions">
-            <button onclick="editCamp(${campaign.id})">Edit</button>
-            <button onclick="removeCamp(${campaign.id})">Delete</button>
+            <button onclick="editCamp(${campaign.id})" class="btn-edit">Edit</button>
+            <button onclick="removeCamp(${campaign.id})" class="btn-delete">Delete</button>
           </td></tr>`;
 
         document.querySelector("tbody").appendChild(tr);
