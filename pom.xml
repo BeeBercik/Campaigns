@@ -9,7 +9,7 @@
         <relativePath/>
     </parent>
     <groupId>com.campaigns</groupId>
-    <artifactId>task</artifactId>
+    <artifactId>campaigns</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>campaigns</name>
     <description>campaigns</description>
